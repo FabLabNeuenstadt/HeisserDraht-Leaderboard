@@ -1,10 +1,13 @@
 TEMPLATE = app
 
-QT += qml quick
+QT += qml quick serialport
 
 CONFIG += c++11
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    serialhandler.cpp \
+    match.cpp \
+    maincontroller.cpp
 
 RESOURCES += qml.qrc
 
@@ -13,3 +16,8 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
+
+HEADERS += \
+    serialhandler.h \
+    match.h \
+    maincontroller.h

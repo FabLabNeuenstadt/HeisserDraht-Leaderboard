@@ -27,10 +27,21 @@ void SerialHandler::read()
     QByteArray data = serial->readLine();
     QString dataStr = QString(data);
 
-    QStringList params = dataStr.split(';');
-    QTime time = QTime::fromString(params[0],"mm:ss:zzz");
-    int hitCount = params[1].toInt();
-    QString status = params[2];
+    dataStr = dataStr.remove('\r');
+    dataStr = dataStr.remove('\n');
+
+    QTime time;
+    int hitCount;
+    QString status;
+    try {
+        QStringList params = dataStr.split(';');
+        time = QTime::fromString(params[0],"mm:ss.zzz");
+        hitCount = params[1].toInt();
+        status = params[2];
+    } catch(...)
+    {
+        // ToDo: Error-Handling
+    }
 
     if(status == "Start")
     {

@@ -56,29 +56,37 @@ void Match::setDurationStr(const QString &durationStr)
 
 Match::Match(QObject *parent) : QObject(parent)
 {
-    updateTimer = new QTimer();
-    updateTimer->setInterval(10);
-
-    connect(updateTimer, SIGNAL(timeout()), this, SLOT(update()));
-
-    //start(QTime::fromMSecsSinceStartOfDay(10000));
+    setDuration(QTime::fromMSecsSinceStartOfDay(0));
+    updateTimer = NULL;
 }
 
 void Match::start(QTime penaltyTime)
 {
     startTime = QTime::currentTime();
     setPenaltyTime(penaltyTime);
+
+    if(updateTimer == NULL) {
+        updateTimer = new QTimer();
+        updateTimer->setInterval(10);
+        connect(updateTimer, SIGNAL(timeout()), this, SLOT(update()));
+    }
+
     updateTimer->start();
 }
 
 void Match::mistake(QTime duration, int mistakeCount)
 {
     setMistakeCount(mistakeCount);
+    setDuration(duration);
 }
 
 void Match::stop(QTime duration, int mistakeCount)
 {
-    updateTimer->stop();
+    if(updateTimer) {
+        updateTimer->stop();
+        delete updateTimer;
+        updateTimer = NULL;
+    }
 
     // use the time, that was meassured by the arduino
     setDuration(duration);

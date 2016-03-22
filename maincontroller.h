@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QQuickView>
 #include <QQmlContext>
+#include <QList>
 #include "serialhandler.h"
 #include "match.h"
 
@@ -14,6 +15,11 @@ private:
     SerialHandler* serialHandler;
     Match* currMatch;
     QQuickView view;
+    QList<QObject*> leaderboard;
+
+    void connectNewMatch();
+    void disconnectOldMatch();
+    void newMatch();
 
 public:
     explicit MainController(QObject *parent = 0);
@@ -21,6 +27,7 @@ public:
 signals:
 
 public slots:
+    void addMatchToLeaderboard();
 };
 
 #endif // MAINCONTROLLER_H

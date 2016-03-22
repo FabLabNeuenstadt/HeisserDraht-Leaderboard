@@ -51,6 +51,7 @@ signals:
     void durationChanged();
     void mistakeCountChanged();
     void nameChanged();
+    void stopped();
 
 public slots:
     void start(QTime penaltyTime);

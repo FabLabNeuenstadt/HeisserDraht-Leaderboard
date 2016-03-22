@@ -91,6 +91,8 @@ void Match::stop(QTime duration, int mistakeCount)
     // use the time, that was meassured by the arduino
     setDuration(duration);
     setMistakeCount(mistakeCount);
+
+    emit stopped();
 }
 
 void Match::update()

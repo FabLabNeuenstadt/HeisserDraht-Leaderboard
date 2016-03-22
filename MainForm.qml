@@ -6,14 +6,6 @@ Rectangle {
 
     width: 700
     height: 500
-    property alias rowCurrentGame: rowCurrentGame
-    property alias columnMain: columnMain
-    property alias imageAvatar: imageAvatar
-    property alias textInputName: textInputName
-    property alias listViewMatches: listViewMatches
-    property alias mouseArea: mouseArea
-    property alias textTime: textTime
-    property alias modelMatches: modelMatches
 
     ListModel {
         id: modelMatches
@@ -179,7 +171,7 @@ Rectangle {
         }
 
         ListView {
-            id: listViewMatches
+            id: listLeaderboard
             anchors.top: rowCurrentGame.bottom
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -228,7 +220,7 @@ Rectangle {
 
                                 Text {
                                     id: nameField
-                                    text: name
+                                    text: model.modelData.name
                                     anchors.verticalCenter: parent.verticalCenter
                                     font.bold: true
                                     font.pointSize: 12
@@ -239,7 +231,7 @@ Rectangle {
 
                                 Text {
                                     id: timeField
-                                    text: time
+                                    text: model.modelData.durationStr
                                     anchors.verticalCenter: parent.verticalCenter
                                     //anchors.left: nameField.Right
                                     anchors.right: parent.right
@@ -265,7 +257,7 @@ Rectangle {
             }
 
 
-            model: modelMatches
+            model: leaderboard
         }
 
 

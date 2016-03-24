@@ -60,6 +60,13 @@ Match::Match(QObject *parent) : QObject(parent)
     updateTimer = NULL;
 }
 
+Match::~Match()
+{
+    if(updateTimer) {
+        delete updateTimer;
+    }
+}
+
 void Match::start(QTime penaltyTime)
 {
     startTime = QTime::currentTime();

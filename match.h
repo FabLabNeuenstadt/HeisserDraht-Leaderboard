@@ -32,6 +32,7 @@ private:
 
 public:
     explicit Match(QObject *parent = 0);
+    ~Match();
 
     QTime duration() const;
     void setDuration(QTime duration);

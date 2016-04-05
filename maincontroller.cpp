@@ -4,10 +4,10 @@ MainController::MainController(QObject *parent) : QObject(parent)
 {
     serialHandler = new SerialHandler();
 
-    Match* tmpMatch = new Match();
+    /*Match* tmpMatch = new Match();
     tmpMatch->setName("Mr. Brot");
     tmpMatch->setDuration(QTime::fromMSecsSinceStartOfDay(2712736));
-    leaderboard.append(tmpMatch);
+    leaderboard.append(tmpMatch);*/
 
     view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
     view.setSource(QUrl(QStringLiteral("qrc:/MainForm.qml")));
@@ -30,14 +30,15 @@ void MainController::connectNewMatch()
 
 void MainController::disconnectOldMatch()
 {
-    currMatch->disconnect();
-
     /*disconnect(serialHandler, SIGNAL(started(QTime)), currMatch, SLOT(start(QTime)));
     disconnect(serialHandler, SIGNAL(mistake(QTime,int)), currMatch, SLOT(mistake(QTime,int)));
-    disconnect(serialHandler, SIGNAL(stopped(QTime,int)), currMatch, SLOT(stop(QTime,int)));*/
-    //disconnect(serialHandler, SIGNAL(reset()), currMatch, SLOT(reset()));
+    disconnect(serialHandler, SIGNAL(stopped(QTime,int)), currMatch, SLOT(stop(QTime,int)));
+    disconnect(serialHandler, SIGNAL(reset()), currMatch, SLOT(reset()));*/
 
-    disconnect(currMatch, SIGNAL(stopped()), this, SLOT(addMatchToLeaderboard()));
+    serialHandler->disconnect(currMatch); // disconnect all serialHandler-Signals from currMatch-Slots
+
+    currMatch->disconnect(); // disconnect all currMatch-Signals from all Slots
+    //disconnect(currMatch, SIGNAL(stopped()), this, SLOT(addMatchToLeaderboard()));
 }
 
 void MainController::newMatch() {
@@ -66,6 +67,7 @@ void MainController::addMatchToLeaderboard()
     }
 
     leaderboard.insert(idx, currMatch);
-    view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
     newMatch();
+
+    view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
 }

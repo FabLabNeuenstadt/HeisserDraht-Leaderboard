@@ -49,6 +49,16 @@ void Match::setPenaltyTime(const QTime &penaltyTime)
     _penaltyTime = penaltyTime;
 }
 
+int Match::avatarId() const
+{
+    return _avatarId;
+}
+
+void Match::setAvatarId(int avatarId)
+{
+    _avatarId = avatarId;
+}
+
 void Match::setDurationStr(const QString &durationStr)
 {
     _durationStr = durationStr;
@@ -104,7 +114,8 @@ void Match::stop(QTime duration, int mistakeCount)
 
 void Match::update()
 {
-    setDuration(QTime::fromMSecsSinceStartOfDay(startTime.msecsTo(QTime::currentTime())));
+    int currPenaltyTime = mistakeCount() * penaltyTime().msecsSinceStartOfDay();
+    setDuration(QTime::fromMSecsSinceStartOfDay(startTime.msecsTo(QTime::currentTime()) + currPenaltyTime));
     updateTimer->start();
 }
 

@@ -24,6 +24,10 @@ void SerialHandler::open(QString name)
 
 void SerialHandler::read()
 {
+    if(!serial->canReadLine()) {
+        return;
+    }
+
     QByteArray data = serial->readLine();
     QString dataStr = QString(data);
 
@@ -32,18 +36,25 @@ void SerialHandler::read()
 
     QTime time;
     int hitCount;
-    QString status;
+    QString status;    
     try {
         QStringList params = dataStr.split(';');
-        time = QTime::fromString(params[0],"mm:ss.zzz");
-        hitCount = params[1].toInt();
-        status = params[2];
+
+        if(params.length() == 3) {
+            time = QTime::fromString(params[0],"mm:ss.zzz");
+            hitCount = params[1].toInt();
+            status = params[2];
+        }
     } catch(...)
     {
         // ToDo: Error-Handling
     }
 
-    if(status == "Start")
+    if(status == "Time")
+    {
+        //emit timeChanged(time);
+    }
+    else if(status == "Start")
     {
         emit started(time);
     }

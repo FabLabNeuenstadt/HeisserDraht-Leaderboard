@@ -13,7 +13,7 @@ MainController::MainController(QObject *parent) : QObject(parent)
     view.setSource(QUrl(QStringLiteral("qrc:/MainForm.qml")));
     view.show();
 
-    serialHandler->open("/dev/ttyUSB0");
+    serialHandler->open("/dev/ttyACM0");
 
     newMatch();
 }

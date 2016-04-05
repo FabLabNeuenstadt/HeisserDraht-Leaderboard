@@ -21,6 +21,7 @@ signals:
     void stopped(QTime time, int hitCount);
     void reset();
     void mistake(QTime time, int hitCount);
+    void timeChanged(QTime time);
 
 public slots:
     void read();

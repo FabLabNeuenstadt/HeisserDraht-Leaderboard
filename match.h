@@ -14,6 +14,7 @@ class Match : public QObject
     Q_PROPERTY(QString durationStr READ durationStr NOTIFY durationChanged)
     Q_PROPERTY(int mistakeCount READ mistakeCount WRITE setMistakeCount NOTIFY mistakeCountChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(int avatarId READ avatarId WRITE setAvatarId NOTIFY avatarIdChanged)
 
 private:
     QTimer* updateTimer;
@@ -27,6 +28,8 @@ private:
     QTime _penaltyTime;
 
     QString _name;
+
+    int _avatarId;
 
     void setDurationStr(const QString &durationStr);
 
@@ -48,11 +51,15 @@ public:
     QTime penaltyTime() const;
     void setPenaltyTime(const QTime &penaltyTime);
 
+    int avatarId() const;
+    void setAvatarId(int avatarId);
+
 signals:
     void durationChanged();
     void mistakeCountChanged();
     void nameChanged();
     void stopped();
+    void avatarIdChanged();
 
 public slots:
     void start(QTime penaltyTime);

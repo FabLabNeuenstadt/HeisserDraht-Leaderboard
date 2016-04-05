@@ -125,7 +125,7 @@ Rectangle {
             anchors.left: parent.left
             anchors.top: parent.top
 
-            Image {
+            /*Image {
                 id: imageAvatar
                 width: height
                 anchors.bottom: parent.bottom
@@ -152,7 +152,7 @@ Rectangle {
                 anchors.leftMargin: 10
                 font.pointSize: 12
                 verticalAlignment: Text.AlignVCenter
-            }
+            }*/
 
             Text {
                 id: textTime

@@ -23,7 +23,7 @@ void MainController::connectNewMatch()
     connect(serialHandler, SIGNAL(started(QTime)), currMatch, SLOT(start(QTime)));
     connect(serialHandler, SIGNAL(mistake(QTime,int)), currMatch, SLOT(mistake(QTime,int)));
     connect(serialHandler, SIGNAL(stopped(QTime,int)), currMatch, SLOT(stop(QTime,int)));
-    //connect(serialHandler, SIGNAL(reset()), currMatch, SLOT(reset()));
+    connect(serialHandler, SIGNAL(reset()), currMatch, SLOT(reset()));
 
     connect(currMatch, SIGNAL(stopped()), this, SLOT(addMatchToLeaderboard()));
 }
@@ -67,7 +67,7 @@ void MainController::addMatchToLeaderboard()
     }
 
     leaderboard.insert(idx, currMatch);
-    newMatch();
+    //newMatch();
 
     view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
 }

@@ -23,3 +23,5 @@ HEADERS += \
     match.h \
     maincontroller.h \
     storagecontroller.h
+
+DISTFILES +=

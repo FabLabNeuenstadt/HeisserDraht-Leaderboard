@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>MainForm.qml</file>
+        <file>NewEntryForm.qml</file>
     </qresource>
 </RCC>

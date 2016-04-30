@@ -58,7 +58,7 @@ signals:
     void durationChanged();
     void mistakeCountChanged();
     void nameChanged();
-    void stopped();
+    void stopped(int duration, int mistakeCount);
     void avatarIdChanged();
 
 public slots:

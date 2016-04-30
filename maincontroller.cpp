@@ -13,9 +13,15 @@ MainController::MainController(QObject *parent) : QObject(parent)
     view.setSource(QUrl(QStringLiteral("qrc:/MainForm.qml")));
     view.show();
 
-    serialHandler->open("/dev/ttyACM0");
+    dialogView = new QQuickView();
+    dialogView->setSource(QUrl(QStringLiteral("qrc:/NewEntryForm.qml")));
+    QObject* dialogRoot = dynamic_cast<QObject*>(dialogView->rootObject());
 
     newMatch();
+
+    connect(dialogRoot, SIGNAL(buttonAddClicked(QString, int, int)), this, SLOT(addMatchToLeaderboard(QString, int, int)));
+
+    serialHandler->open("/dev/ttyACM0");
 }
 
 void MainController::connectNewMatch()
@@ -25,7 +31,9 @@ void MainController::connectNewMatch()
     connect(serialHandler, SIGNAL(stopped(QTime,int)), currMatch, SLOT(stop(QTime,int)));
     connect(serialHandler, SIGNAL(reset()), currMatch, SLOT(reset()));
 
-    connect(currMatch, SIGNAL(stopped()), this, SLOT(addMatchToLeaderboard()));
+    //connect(currMatch, SIGNAL(stopped()), this, SLOT(addMatchToLeaderboard()));
+    //connect(currMatch, SIGNAL(stopped(int, int)), dynamic_cast<QObject*>(dialogView->rootObject()), SLOT(display(int, int)));
+    //connect(currMatch, SIGNAL(stopped()), dialogView, SLOT(show()));
 }
 
 void MainController::disconnectOldMatch()
@@ -38,19 +46,26 @@ void MainController::disconnectOldMatch()
     serialHandler->disconnect(currMatch); // disconnect all serialHandler-Signals from currMatch-Slots
 
     currMatch->disconnect(); // disconnect all currMatch-Signals from all Slots
+    //connect(currMatch, SIGNAL(stopped(int,int)), dialogView, SLOT(show()));
     //disconnect(currMatch, SIGNAL(stopped()), this, SLOT(addMatchToLeaderboard()));
 }
 
 void MainController::newMatch() {
-    disconnectOldMatch();
+    //disconnectOldMatch();
 
     currMatch = new Match();
     view.rootContext()->setContextProperty("currMatch", currMatch);
+    dialogView->rootContext()->setContextProperty("currMatch", currMatch);
     connectNewMatch();
 }
 
-void MainController::addMatchToLeaderboard()
+void MainController::addMatchToLeaderboard(QString name, QTime duration, int mistakeCount)
 {
+    Match* currMatch = new Match();
+    currMatch->setName(name);
+    currMatch->setDuration(duration);
+    currMatch->setMistakeCount(mistakeCount);
+
     const int listSize = leaderboard.size();
     int idx = -1;
     for (int i = 0; i < listSize; ++i)

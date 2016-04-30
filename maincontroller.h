@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QQuickView>
+#include <QQuickItem>
 #include <QQmlContext>
 #include <QList>
 #include "serialhandler.h"
@@ -15,6 +16,7 @@ private:
     SerialHandler* serialHandler;
     Match* currMatch;
     QQuickView view;
+    QQuickView *dialogView;
     QList<QObject*> leaderboard;
 
     void connectNewMatch();
@@ -27,7 +29,7 @@ public:
 signals:
 
 public slots:
-    void addMatchToLeaderboard();
+    void addMatchToLeaderboard(QString name, QTime duration, int mistakeCount);
 };
 
 #endif // MAINCONTROLLER_H

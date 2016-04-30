@@ -109,7 +109,7 @@ void Match::stop(QTime duration, int mistakeCount)
     setDuration(duration);
     setMistakeCount(mistakeCount);
 
-    emit stopped();
+    emit stopped(duration.msecsSinceStartOfDay(), 6);
 }
 
 void Match::update()

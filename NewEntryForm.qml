@@ -1,10 +1,28 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
+//import QtQuick.Dialogs 1.2
 
-Rectangle {
+Item {
+    id: dialog
     width: 320
     height: 140
+
+    property string name
+    property int duration
+    property int mistakeCount
+
+    signal buttonCancelClicked()
+    signal buttonAddClicked(string name, int duration, int mistakeCount)
+
+    Connections {
+        target: currMatch
+        onStopped: {
+            dialog.duration = duration
+            dialog.mistakeCount = mistakeCount
+            //dialog.show()
+        }
+    }
 
     ColumnLayout {
         id: columnLayoutMain
@@ -46,13 +64,13 @@ Rectangle {
 
                 Label {
                     id: labelMistakes
-                    text: qsTr("Fehler: 0")
+                    text: qsTr("Fehler: " +  mistakeCount)
                     font.pointSize: 16
                 }
 
                 Label {
                     id: labelDuration
-                    text: qsTr("Zeit: 00:00.000")
+                    text: qsTr("Zeit: 00:00.000" + duration)
                     font.pointSize: 16
                 }
 
@@ -69,12 +87,14 @@ Rectangle {
             Button {
                 id: buttonCancel
                 text: qsTr("Abbrechen")
+                onClicked: dialog.buttonCancelClicked()
             }
 
             Button {
                 id: buttonAdd
                 text: qsTr("Eintragen")
                 isDefault: true
+                onClicked: dialog.buttonAddClicked(name, duration, mistakeCount)
             }
 
         }

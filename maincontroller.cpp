@@ -11,6 +11,7 @@ MainController::MainController(QObject *parent) : QObject(parent)
 
     view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
     view.setSource(QUrl(QStringLiteral("qrc:/MainForm.qml")));
+    view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.show();
 
     dialogView = new QQuickView();

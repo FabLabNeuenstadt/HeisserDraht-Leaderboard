@@ -1,4 +1,5 @@
 import QtQuick 2.5
+import QtQuick.Window 2.0
 import QtQuick.Controls 1.3
 import QtGraphicalEffects 1.0
 
@@ -155,8 +156,23 @@ Rectangle {
             }*/
 
             Text {
+                id: textMistakeCount
+                //width: 200
+                text: currMatch.mistakeCount
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 0
+                font.pointSize: 100
+                wrapMode: Text.NoWrap
+                //horizontalAlignment: Text.AlignHCenter
+                anchors.left: parent.left
+                anchors.top: parent.top
+                fontSizeMode: Text.Fit
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Text {
                 id: textTime
-                width: 200
+                //width: 200
                 text: currMatch.durationStr
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 0

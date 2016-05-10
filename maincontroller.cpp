@@ -20,15 +20,23 @@ MainController::MainController(QObject *parent) : QObject(parent)
     newMatch();
 
     connect(dialogRoot, SIGNAL(buttonAddClicked(QString, int, int)), this, SLOT(addMatchToLeaderboard(QString, int, int)));
+    connect(dialogRoot, SIGNAL(buttonCancelClicked()), this, SLOT(hideDialog()));
 
     serialHandler->open("/dev/ttyACM0");
 }
 
 void MainController::connectNewMatch()
 {
+    // start
     connect(serialHandler, SIGNAL(started(QTime)), currMatch, SLOT(start(QTime)));
+
+    // mistake
     connect(serialHandler, SIGNAL(mistake(QTime,int)), currMatch, SLOT(mistake(QTime,int)));
+
+    // Stop
     connect(serialHandler, SIGNAL(stopped(QTime,int)), currMatch, SLOT(stop(QTime,int)));
+    connect(serialHandler, SIGNAL(stopped(QTime,int)), this, SLOT(showDialog()));
+
     connect(serialHandler, SIGNAL(reset()), currMatch, SLOT(reset()));
 
     //connect(currMatch, SIGNAL(stopped()), this, SLOT(addMatchToLeaderboard()));
@@ -59,11 +67,11 @@ void MainController::newMatch() {
     connectNewMatch();
 }
 
-void MainController::addMatchToLeaderboard(QString name, QTime duration, int mistakeCount)
+void MainController::addMatchToLeaderboard(QString name, int duration, int mistakeCount)
 {
     Match* currMatch = new Match();
     currMatch->setName(name);
-    currMatch->setDuration(duration);
+    currMatch->setDuration(QTime::fromMSecsSinceStartOfDay(duration));
     currMatch->setMistakeCount(mistakeCount);
 
     const int listSize = leaderboard.size();
@@ -85,4 +93,17 @@ void MainController::addMatchToLeaderboard(QString name, QTime duration, int mis
     //newMatch();
 
     view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
+
+    dialogView->hide();
 }
+
+void MainController::showDialog()
+{
+    dialogView->show();
+}
+
+void MainController::hideDialog()
+{
+    dialogView->hide();
+}
+

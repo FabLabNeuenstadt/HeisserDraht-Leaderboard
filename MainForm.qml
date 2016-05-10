@@ -82,19 +82,19 @@ Rectangle {
 
         GradientStop {
             position: 0
-            color: "#f0b7a1"
+            color: "#feccb1"
         }
         GradientStop {
             position: 0.5
-            color: "#8c3310"
+            color: "#f17432"
         }
         GradientStop {
             position: 0.51
-            color: "#752201"
+            color: "#ea5507"
         }
         GradientStop {
             position: 1
-            color: "#bf6e4e"
+            color: "#fb955e"
         }
     }
 

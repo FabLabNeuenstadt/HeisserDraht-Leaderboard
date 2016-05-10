@@ -18,9 +18,42 @@ Item {
     Connections {
         target: currMatch
         onStopped: {
+            textFieldName.text = ""
+
             dialog.duration = duration
+            var milliseconds = duration % 1000
+            var seconds = parseInt((duration / 1000) % 60)
+            var minutes = parseInt((duration / 1000 / 60) % 60)
+
+            var millisecondsStr = ""
+            var secondsStr = ""
+            var minutesStr = ""
+
+            if(milliseconds < 10) {
+                millisecondsStr = "00" + milliseconds
+            } else if (milliseconds < 100) {
+                millisecondsStr = "0" + milliseconds
+            } else {
+                millisecondsStr = milliseconds
+            }
+
+            if(seconds < 10) {
+                secondsStr = "0" + seconds
+            } else {
+                secondsStr = seconds
+            }
+
+            if(minutes < 10) {
+                minutesStr = "0" + minutes
+            } else {
+                minutesStr = minutes
+            }
+
+            labelDuration.text = "Zeit: " + minutesStr + ":" + secondsStr + "." + millisecondsStr
+
             dialog.mistakeCount = mistakeCount
-            //dialog.show()
+
+            textFieldName.focus = true
         }
     }
 
@@ -60,6 +93,9 @@ Item {
                     height: 26
                     Layout.fillWidth: true
                     placeholderText: qsTr("Name")
+                    Keys.onReturnPressed: {
+                        dialog.buttonAddClicked(textFieldName.text, duration, mistakeCount)
+                    }
                 }
 
                 Label {
@@ -70,7 +106,7 @@ Item {
 
                 Label {
                     id: labelDuration
-                    text: qsTr("Zeit: 00:00.000" + duration)
+                    text: qsTr("Zeit: 00:00.000")
                     font.pointSize: 16
                 }
 
@@ -94,7 +130,7 @@ Item {
                 id: buttonAdd
                 text: qsTr("Eintragen")
                 isDefault: true
-                onClicked: dialog.buttonAddClicked(name, duration, mistakeCount)
+                onClicked: dialog.buttonAddClicked(textFieldName.text, duration, mistakeCount)
             }
 
         }

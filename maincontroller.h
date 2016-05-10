@@ -29,7 +29,9 @@ public:
 signals:
 
 public slots:
-    void addMatchToLeaderboard(QString name, QTime duration, int mistakeCount);
+    void addMatchToLeaderboard(QString name, int duration, int mistakeCount);
+    void showDialog();
+    void hideDialog();
 };
 
 #endif // MAINCONTROLLER_H

@@ -8,7 +8,7 @@ QTime Match::duration() const
 void Match::setDuration(QTime duration)
 {
     _duration = duration;
-    setDurationStr(duration.toString("mm:ss.zzz"));
+    setDurationStr(_duration.toString("mm:ss.zzz"));
     emit durationChanged();
 }
 
@@ -66,8 +66,12 @@ void Match::setDurationStr(const QString &durationStr)
 
 Match::Match(QObject *parent) : QObject(parent)
 {
+    updateTimer = new QTimer();
+    updateTimer->setInterval(10);
+    connect(updateTimer, SIGNAL(timeout()), this, SLOT(update()));
+
     setDuration(QTime::fromMSecsSinceStartOfDay(0));
-    updateTimer = NULL;
+    setMistakeCount( 0);
 }
 
 Match::~Match()
@@ -80,13 +84,7 @@ Match::~Match()
 void Match::start(QTime penaltyTime)
 {
     startTime = QTime::currentTime();
-    setPenaltyTime(penaltyTime);
-
-    if(updateTimer == NULL) {
-        updateTimer = new QTimer();
-        updateTimer->setInterval(10);
-        connect(updateTimer, SIGNAL(timeout()), this, SLOT(update()));
-    }
+    setPenaltyTime( penaltyTime);
 
     updateTimer->start();
 }
@@ -99,24 +97,17 @@ void Match::mistake(QTime duration, int mistakeCount)
 
 void Match::stop(QTime duration, int mistakeCount)
 {
-    if(updateTimer) {
-        updateTimer->stop();
-        delete updateTimer;
-        updateTimer = NULL;
-    }
+    updateTimer->stop();
 
     // use the time, that was meassured by the arduino
     setDuration(duration);
     setMistakeCount(mistakeCount);
 
-    emit stopped(duration.msecsSinceStartOfDay(), 6);
+    emit stopped(duration.msecsSinceStartOfDay(), mistakeCount);
 }
 
 void Match::update()
 {
     int currPenaltyTime = mistakeCount() * penaltyTime().msecsSinceStartOfDay();
     setDuration(QTime::fromMSecsSinceStartOfDay(startTime.msecsTo(QTime::currentTime()) + currPenaltyTime));
-    updateTimer->start();
 }
-
-

@@ -178,7 +178,7 @@ Rectangle {
                 anchors.bottomMargin: 0
                 font.pointSize: 100
                 wrapMode: Text.NoWrap
-                horizontalAlignment: Text.AlignHCenter
+                horizontalAlignment: Text.AlignRight
                 anchors.right: parent.right
                 anchors.top: parent.top
                 fontSizeMode: Text.Fit

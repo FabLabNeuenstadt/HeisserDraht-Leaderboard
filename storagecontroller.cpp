@@ -2,43 +2,34 @@
 
 StorageController::StorageController(QObject *parent) : QObject(parent)
 {
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("db.sqlite");
-    db.open();
+    file = new QFile("data.csv");
+    //file->open(QFile::ReadWrite);
+}
+
+QList<QObject*> StorageController::read() {
+    //file->read()
+}
+
+void StorageController::openForAppend() {
+    file->open(QFile::Append);
 }
 
 StorageController::~StorageController()
 {
-    db.close();
+    file->close();
 }
 
 void StorageController::createTables()
 {
-    {
-        QSqlQuery query;
-        query.prepare("CREATE TABLE matches (id INTEGER PRIMARY KEY, name VARCHAR(50), duration INTEGER, mistakeCount INTEGER, avatarId INTEGER");
-        if(query.exec()) {
-
-        }
-    }
-    {
-        QSqlQuery query;
-        query.prepare("CREATE INDEX durationIndex ON matches (duration)");
-        if(query.exec()) {
-
-        }
-    }
 }
 
 void StorageController::storeMatch(Match *match)
 {
-    QSqlQuery query;
-    query.prepare("INSERT INTO matches (name, duration, mistakeCount, avatarId) VALUES (:name, :duration, :mistakeCount, :avatarId)");
-    query.bindValue(":name", QVariant(match->name()));
-    query.bindValue(":duration", QVariant(match->duration()));
-    query.bindValue(":mistakeCount", QVariant(match->mistakeCount()));
-    query.bindValue(":avatarId", QVariant(match->avatarId()));
-    if(query.exec()) {
-
-    }
+    QString line = QString("\n" +
+            match->name() + ";" +
+            match->durationStr() + ";" +
+            QString::number(match->mistakeCount()) + ";" +
+            QString::number(match->avatarId()));
+    file->write(line.toStdString().c_str());
+    file->flush();
 }

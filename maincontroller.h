@@ -8,6 +8,7 @@
 #include <QList>
 #include "serialhandler.h"
 #include "match.h"
+#include "storagecontroller.h"
 
 class MainController : public QObject
 {
@@ -17,6 +18,7 @@ private:
     Match* currMatch;
     QQuickView view;
     QQuickView *dialogView;
+    StorageController *storageCtrl;
     QList<QObject*> leaderboard;
 
     void connectNewMatch();

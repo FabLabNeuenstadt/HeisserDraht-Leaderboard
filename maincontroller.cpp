@@ -9,6 +9,9 @@ MainController::MainController(QObject *parent) : QObject(parent)
     tmpMatch->setDuration(QTime::fromMSecsSinceStartOfDay(2712736));
     leaderboard.append(tmpMatch);*/
 
+    storageCtrl = new StorageController();
+    storageCtrl->openForAppend();
+
     view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
     view.setSource(QUrl(QStringLiteral("qrc:/MainForm.qml")));
     view.setResizeMode(QQuickView::SizeRootObjectToView);
@@ -94,6 +97,7 @@ void MainController::addMatchToLeaderboard(QString name, int duration, int mista
     //newMatch();
 
     view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
+    storageCtrl->storeMatch(currMatch);
 
     dialogView->hide();
 }

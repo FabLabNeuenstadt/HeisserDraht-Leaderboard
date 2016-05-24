@@ -2,5 +2,23 @@
     <qresource prefix="/">
         <file>MainForm.qml</file>
         <file>NewEntryForm.qml</file>
+        <file>avatars/1.png</file>
+        <file>avatars/10.png</file>
+        <file>avatars/11.png</file>
+        <file>avatars/12.png</file>
+        <file>avatars/13.png</file>
+        <file>avatars/14.png</file>
+        <file>avatars/15.png</file>
+        <file>avatars/16.png</file>
+        <file>avatars/2.png</file>
+        <file>avatars/3.png</file>
+        <file>avatars/4.png</file>
+        <file>avatars/5.png</file>
+        <file>avatars/6.png</file>
+        <file>avatars/7.png</file>
+        <file>avatars/8.png</file>
+        <file>avatars/9.png</file>
+        <file>avatars/readme.txt</file>
+        <file>chooseAvatarForm.qml</file>
     </qresource>
 </RCC>

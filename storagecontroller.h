@@ -16,11 +16,12 @@ public:
     ~StorageController();
 
 signals:
+    void addMatchToLeaderboard(QString name, int duration, int mistakeCount, int avatarId);
 
 public slots:
     void createTables();
     void storeMatch(Match* match);
-    QList<QObject*> read();
+    void read();
     void openForAppend();
 };
 

@@ -225,11 +225,11 @@ Rectangle {
 
                                 anchors.verticalCenter: parent.verticalCenter
 
-                                Rectangle {
+                                Image {
                                     id: avatar
-                                    width: 40
-                                    height: 40
-                                    color: colorCode
+                                    width: 80
+                                    height: 80
+                                    source: "avatars/" + model.modelData.avatarId + ".png"
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: parent.left
                                 }
@@ -239,10 +239,19 @@ Rectangle {
                                     text: model.modelData.name
                                     anchors.verticalCenter: parent.verticalCenter
                                     font.bold: true
-                                    font.pointSize: 12
+                                    font.pointSize: 16
                                     anchors.leftMargin: 5
                                     anchors.left: avatar.right
                                     anchors.right: timeField.left
+                                }
+
+                                Text {
+                                    id: mistakeCountField
+                                    text: model.modelData.mistakeCount
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    anchors.right: timeField.left
+                                    anchors.rightMargin: 45
+                                    font.pointSize: 16
                                 }
 
                                 Text {
@@ -252,7 +261,7 @@ Rectangle {
                                     //anchors.left: nameField.Right
                                     anchors.right: parent.right
                                     anchors.rightMargin: 5
-                                    font.pointSize: 12
+                                    font.pointSize: 16
                                 }
                             }
                         }

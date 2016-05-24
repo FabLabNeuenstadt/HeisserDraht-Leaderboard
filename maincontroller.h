@@ -18,6 +18,7 @@ private:
     Match* currMatch;
     QQuickView view;
     QQuickView *dialogView;
+    QQuickView *avatarView;
     StorageController *storageCtrl;
     QList<QObject*> leaderboard;
 
@@ -31,9 +32,11 @@ public:
 signals:
 
 public slots:
-    void addMatchToLeaderboard(QString name, int duration, int mistakeCount);
+    void addMatchToLeaderboard(QString name, int duration, int mistakeCount, int avatarId);
     void showDialog();
     void hideDialog();
+    void showAvatarForm();
+    void hideAvatarForm();
 };
 
 #endif // MAINCONTROLLER_H

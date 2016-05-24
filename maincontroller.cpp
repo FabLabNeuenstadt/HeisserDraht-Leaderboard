@@ -10,23 +10,40 @@ MainController::MainController(QObject *parent) : QObject(parent)
     leaderboard.append(tmpMatch);*/
 
     storageCtrl = new StorageController();
-    storageCtrl->openForAppend();
 
     view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
     view.setSource(QUrl(QStringLiteral("qrc:/MainForm.qml")));
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.show();
 
+    avatarView = new QQuickView();
+    avatarView->setSource(QUrl(QStringLiteral("qrc:/chooseAvatarForm.qml")));
+    avatarView->setResizeMode(QQuickView::SizeRootObjectToView);
+    QObject* avatarRoot = dynamic_cast<QObject*>(avatarView->rootObject());
+    //avatarView->show();
+
     dialogView = new QQuickView();
+    dialogView->rootContext()->setContextProperty("avatarForm", avatarRoot);
     dialogView->setSource(QUrl(QStringLiteral("qrc:/NewEntryForm.qml")));
     QObject* dialogRoot = dynamic_cast<QObject*>(dialogView->rootObject());
 
     newMatch();
 
-    connect(dialogRoot, SIGNAL(buttonAddClicked(QString, int, int)), this, SLOT(addMatchToLeaderboard(QString, int, int)));
+    connect(dialogRoot, SIGNAL(buttonAddClicked(QString, int, int, int)), this, SLOT(addMatchToLeaderboard(QString, int, int, int)));
     connect(dialogRoot, SIGNAL(buttonCancelClicked()), this, SLOT(hideDialog()));
+    connect(dialogRoot, SIGNAL(chooseAvatarClicked()), this, SLOT(showAvatarForm()));
 
-    serialHandler->open("/dev/ttyACM0");
+    connect(avatarRoot, SIGNAL(avatarChosen(int)), this, SLOT(hideAvatarForm()));
+
+    connect(storageCtrl, SIGNAL(addMatchToLeaderboard(QString,int,int,int)), this, SLOT(addMatchToLeaderboard(QString,int,int,int)));
+
+    storageCtrl->read();
+
+    storageCtrl->openForAppend();
+
+    serialHandler->open("/dev/ttyACM1");
+
+    dialogView->show();
 }
 
 void MainController::connectNewMatch()
@@ -71,12 +88,13 @@ void MainController::newMatch() {
     connectNewMatch();
 }
 
-void MainController::addMatchToLeaderboard(QString name, int duration, int mistakeCount)
+void MainController::addMatchToLeaderboard(QString name, int duration, int mistakeCount, int avatarId)
 {
     Match* currMatch = new Match();
     currMatch->setName(name);
     currMatch->setDuration(QTime::fromMSecsSinceStartOfDay(duration));
     currMatch->setMistakeCount(mistakeCount);
+    currMatch->setAvatarId(avatarId);
 
     const int listSize = leaderboard.size();
     int idx = -1;
@@ -110,5 +128,15 @@ void MainController::showDialog()
 void MainController::hideDialog()
 {
     dialogView->hide();
+}
+
+void MainController::showAvatarForm()
+{
+    avatarView->show();
+}
+
+void MainController::hideAvatarForm()
+{
+    avatarView->hide();
 }
 

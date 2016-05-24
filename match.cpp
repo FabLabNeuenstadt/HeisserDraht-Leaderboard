@@ -71,7 +71,7 @@ Match::Match(QObject *parent) : QObject(parent)
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(update()));
 
     setDuration(QTime::fromMSecsSinceStartOfDay(0));
-    setMistakeCount( 0);
+    setMistakeCount(0);
 }
 
 Match::~Match()
@@ -84,7 +84,8 @@ Match::~Match()
 void Match::start(QTime penaltyTime)
 {
     startTime = QTime::currentTime();
-    setPenaltyTime( penaltyTime);
+    setPenaltyTime(penaltyTime);
+    setMistakeCount(0);
 
     updateTimer->start();
 }

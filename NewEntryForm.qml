@@ -11,9 +11,11 @@ Item {
     property string name
     property int duration
     property int mistakeCount
+    property int avatarId
 
     signal buttonCancelClicked()
-    signal buttonAddClicked(string name, int duration, int mistakeCount)
+    signal buttonAddClicked(string name, int duration, int mistakeCount, int avatarId)
+    signal chooseAvatarClicked()
 
     Connections {
         target: currMatch
@@ -57,6 +59,13 @@ Item {
         }
     }
 
+    Connections {
+        target: avatarForm
+        onAvatarChosen: {
+            dialog.avatarId = avatarId
+        }
+    }
+
     ColumnLayout {
         id: columnLayoutMain
         anchors.fill: parent
@@ -68,7 +77,6 @@ Item {
             height: 100
             Layout.fillWidth: true
 
-
             Image {
                 id: imageAvatar
                 width: 80
@@ -79,8 +87,15 @@ Item {
                 Layout.minimumWidth: 32
                 Layout.preferredHeight: 80
                 Layout.preferredWidth: 80
-                source: "qrc:/qtquickplugin/images/template_image.png"
+                source: "avatars/" + avatarId + ".png"
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        chooseAvatarClicked()
+                    }
+                }
             }
+
             ColumnLayout {
                 id: columnLayoutValues
                 width: 100
@@ -94,7 +109,7 @@ Item {
                     Layout.fillWidth: true
                     placeholderText: qsTr("Name")
                     Keys.onReturnPressed: {
-                        dialog.buttonAddClicked(textFieldName.text, duration, mistakeCount)
+                        dialog.buttonAddClicked(textFieldName.text, duration, mistakeCount, avatarId)
                     }
                 }
 
@@ -130,7 +145,7 @@ Item {
                 id: buttonAdd
                 text: qsTr("Eintragen")
                 isDefault: true
-                onClicked: dialog.buttonAddClicked(textFieldName.text, duration, mistakeCount)
+                onClicked: dialog.buttonAddClicked(textFieldName.text, duration, mistakeCount, avatarId)
             }
 
         }

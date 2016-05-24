@@ -117,8 +117,6 @@ Rectangle {
         id: columnMain
         anchors.fill: parent
 
-
-
         Rectangle {
             id: rowCurrentGame
             height: parent.height / 100 * 20

@@ -14,13 +14,12 @@ MainController::MainController(QObject *parent) : QObject(parent)
     view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
     view.setSource(QUrl(QStringLiteral("qrc:/MainForm.qml")));
     view.setResizeMode(QQuickView::SizeRootObjectToView);
-    view.show();
+    view.showFullScreen();
 
     avatarView = new QQuickView();
     avatarView->setSource(QUrl(QStringLiteral("qrc:/chooseAvatarForm.qml")));
     avatarView->setResizeMode(QQuickView::SizeRootObjectToView);
     QObject* avatarRoot = dynamic_cast<QObject*>(avatarView->rootObject());
-    //avatarView->show();
 
     dialogView = new QQuickView();
     dialogView->rootContext()->setContextProperty("avatarForm", avatarRoot);
@@ -41,9 +40,9 @@ MainController::MainController(QObject *parent) : QObject(parent)
 
     storageCtrl->openForAppend();
 
-    serialHandler->open("/dev/ttyACM1");
+    serialHandler->open("/dev/ttyUSB0");
 
-    dialogView->show();
+    //dialogView->show();
 }
 
 void MainController::connectNewMatch()

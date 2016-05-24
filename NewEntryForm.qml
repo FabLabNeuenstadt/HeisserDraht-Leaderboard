@@ -56,6 +56,8 @@ Item {
             dialog.mistakeCount = mistakeCount
 
             textFieldName.focus = true
+
+            dialog.avatarId = 0
         }
     }
 

@@ -20,5 +20,6 @@
         <file>avatars/9.png</file>
         <file>avatars/readme.txt</file>
         <file>chooseAvatarForm.qml</file>
+        <file>avatars/0.png</file>
     </qresource>
 </RCC>

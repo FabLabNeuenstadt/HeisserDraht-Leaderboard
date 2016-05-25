@@ -30,6 +30,7 @@ public:
     explicit MainController(QObject *parent = 0);
 
 signals:
+    void addEntry(QString name, int duration, int mistakeCount, int avatarId);
 
 public slots:
     void addMatchToLeaderboard(QString name, int duration, int mistakeCount, int avatarId);

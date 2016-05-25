@@ -8,31 +8,61 @@ Rectangle {
     width: 700
     height: 500
 
-    ListModel {
-        id: modelMatches
+    Connections {
+        target: mainCtrl
+        onAddEntry: {
+            var milliseconds = duration % 1000
+            var seconds = parseInt((duration / 1000) % 60)
+            var minutes = parseInt((duration / 1000 / 60) % 60)
 
-        ListElement {
-            name: "Grey"
-            colorCode: "grey"
-            time: "01:24.127"
-        }
+            var millisecondsStr = ""
+            var secondsStr = ""
+            var minutesStr = ""
 
-        ListElement {
-            name: "Red"
-            colorCode: "red"
-            time: "01:24.127"
-        }
+            if(milliseconds < 10) {
+                millisecondsStr = "00" + milliseconds
+            } else if (milliseconds < 100) {
+                millisecondsStr = "0" + milliseconds
+            } else {
+                millisecondsStr = milliseconds
+            }
 
-        ListElement {
-            name: "Blue"
-            colorCode: "blue"
-            time: "01:24.127"
-        }
+            if(seconds < 10) {
+                secondsStr = "0" + seconds
+            } else {
+                secondsStr = seconds
+            }
 
-        ListElement {
-            name: "Green"
-            colorCode: "green"
-            time: "01:24.127"
+            if(minutes < 10) {
+                minutesStr = "0" + minutes
+            } else {
+                minutesStr = minutes
+            }
+
+            var durationStr = minutesStr + ":" + secondsStr + "." + millisecondsStr
+
+            // ----
+
+            var newEntry = {"duration": duration,
+                "durationStr": durationStr,
+                "name": name,
+                "mistakeCount": mistakeCount,
+                "avatarId": avatarId}
+
+            var i
+            var idx = -1
+            for(i = 0; i < leaderboard.count; i++) {
+                var entry = leaderboard.get(i)
+                if(duration < entry.duration) {
+                    //print(duration + "<" + entry.duration)
+                    leaderboard.insert(i, newEntry)
+                    idx = i
+                    break
+                }
+            }
+            if(idx < 0) {
+                leaderboard.append(newEntry)
+            }
         }
     }
 
@@ -184,6 +214,10 @@ Rectangle {
             }
         }
 
+        ListModel {
+            id: leaderboard
+        }
+
         ListView {
             id: listLeaderboard
             anchors.top: rowCurrentGame.bottom
@@ -227,14 +261,14 @@ Rectangle {
                                     id: avatar
                                     width: 80
                                     height: 80
-                                    source: "avatars/" + model.modelData.avatarId + ".png"
+                                    source: "avatars/" + model.avatarId + ".png"
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: parent.left
                                 }
 
                                 Text {
                                     id: nameField
-                                    text: model.modelData.name
+                                    text: model.name
                                     anchors.verticalCenter: parent.verticalCenter
                                     font.bold: true
                                     font.pointSize: 16
@@ -245,7 +279,7 @@ Rectangle {
 
                                 Text {
                                     id: mistakeCountField
-                                    text: model.modelData.mistakeCount
+                                    text: model.mistakeCount
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.right: timeField.left
                                     anchors.rightMargin: 45
@@ -254,7 +288,7 @@ Rectangle {
 
                                 Text {
                                     id: timeField
-                                    text: model.modelData.durationStr
+                                    text: model.durationStr
                                     anchors.verticalCenter: parent.verticalCenter
                                     //anchors.left: nameField.Right
                                     anchors.right: parent.right
@@ -281,6 +315,15 @@ Rectangle {
 
 
             model: leaderboard
+
+            add: Transition {
+                NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
+                NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 400 }
+            }
+
+            displaced: Transition {
+                NumberAnimation { properties: "x,y"; duration: 400; easing.type: Easing.OutBounce }
+            }
         }
 
 

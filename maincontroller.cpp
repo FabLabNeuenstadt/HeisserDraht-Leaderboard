@@ -11,7 +11,7 @@ MainController::MainController(QObject *parent) : QObject(parent)
 
     storageCtrl = new StorageController();
 
-    view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
+    view.rootContext()->setContextProperty("mainCtrl", this);
     view.setSource(QUrl(QStringLiteral("qrc:/MainForm.qml")));
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.showFullScreen();
@@ -89,7 +89,7 @@ void MainController::newMatch() {
 
 void MainController::addMatchToLeaderboard(QString name, int duration, int mistakeCount, int avatarId)
 {
-    Match* currMatch = new Match();
+    /*Match* currMatch = new Match();
     currMatch->setName(name);
     currMatch->setDuration(QTime::fromMSecsSinceStartOfDay(duration));
     currMatch->setMistakeCount(mistakeCount);
@@ -108,12 +108,14 @@ void MainController::addMatchToLeaderboard(QString name, int duration, int mista
     }
     if(idx < 0) {
         idx = listSize;
-    }
+    }*/
 
-    leaderboard.insert(idx, currMatch);
+    //leaderboard.insert(idx, currMatch);
     //newMatch();
 
-    view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
+    //view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
+    emit addEntry(name, duration, mistakeCount, avatarId);
+
     storageCtrl->storeMatch(currMatch);
 
     dialogView->hide();

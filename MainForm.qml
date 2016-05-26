@@ -63,6 +63,11 @@ Rectangle {
             if(idx < 0) {
                 leaderboard.append(newEntry)
             }
+
+            // only show the best 100
+            if(leaderboard.count > 100) {
+                leaderboard.remove(101, leaderboard.count - 100)
+            }
         }
     }
 

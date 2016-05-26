@@ -2,12 +2,9 @@
 
 MainController::MainController(QObject *parent) : QObject(parent)
 {
-    serialHandler = new SerialHandler();
+    settings = new QSettings("settings.ini", QSettings::IniFormat);
 
-    /*Match* tmpMatch = new Match();
-    tmpMatch->setName("Mr. Brot");
-    tmpMatch->setDuration(QTime::fromMSecsSinceStartOfDay(2712736));
-    leaderboard.append(tmpMatch);*/
+    serialHandler = new SerialHandler();
 
     storageCtrl = new StorageController();
 
@@ -40,9 +37,7 @@ MainController::MainController(QObject *parent) : QObject(parent)
 
     storageCtrl->openForAppend();
 
-    serialHandler->open("/dev/ttyUSB0");
-
-    //dialogView->show();
+    serialHandler->open(settings->value("port", "/dev/ttyUSB0").toString());
 }
 
 void MainController::connectNewMatch()

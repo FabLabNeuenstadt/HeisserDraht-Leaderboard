@@ -6,6 +6,7 @@
 #include <QQuickItem>
 #include <QQmlContext>
 #include <QList>
+#include <QSettings>
 #include "serialhandler.h"
 #include "match.h"
 #include "storagecontroller.h"
@@ -14,6 +15,7 @@ class MainController : public QObject
 {
     Q_OBJECT
 private:
+    QSettings* settings;
     SerialHandler* serialHandler;
     Match* currMatch;
     QQuickView view;

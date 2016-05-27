@@ -66,7 +66,7 @@ Rectangle {
 
             // only show the best 100
             if(leaderboard.count > 100) {
-                leaderboard.remove(101, leaderboard.count - 100)
+                leaderboard.remove(100, leaderboard.count - 100)
             }
         }
     }
@@ -158,35 +158,6 @@ Rectangle {
             anchors.right: parent.right
             anchors.left: parent.left
             anchors.top: parent.top
-
-            /*Image {
-                id: imageAvatar
-                width: height
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 0
-                anchors.top: parent.top
-                anchors.topMargin: 0
-                anchors.left: parent.left
-                anchors.leftMargin: 0
-                source: "qrc:/qtquickplugin/images/template_image.png"
-            }
-
-            TextField {
-                id: textInputName
-                text: currMatch.name
-                anchors.bottomMargin: 10
-                anchors.topMargin: 10
-                placeholderText: "Mr. Unbekannt"
-                anchors.rightMargin: 10
-                anchors.left: imageAvatar.right
-                anchors.right: textTime.left
-                //anchors.bottom: parent.bottom
-                //anchors.top: parent.top
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.leftMargin: 10
-                font.pointSize: 12
-                verticalAlignment: Text.AlignVCenter
-            }*/
 
             Text {
                 id: textMistakeCount

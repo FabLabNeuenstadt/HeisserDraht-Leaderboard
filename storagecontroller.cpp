@@ -47,8 +47,7 @@ void StorageController::createTables()
 }
 
 void StorageController::storeMatch(Match *match)
-{
-    // TODO: check if Name contains wrong characters (';')
+{    
     QString line = QString("\n" +
             match->name() + ";" +
             QString::number(match->duration().msecsSinceStartOfDay()) + ";" +

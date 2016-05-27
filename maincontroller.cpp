@@ -53,29 +53,16 @@ void MainController::connectNewMatch()
     connect(serialHandler, SIGNAL(stopped(QTime,int)), this, SLOT(showDialog()));
 
     connect(serialHandler, SIGNAL(reset()), currMatch, SLOT(reset()));
-
-    //connect(currMatch, SIGNAL(stopped()), this, SLOT(addMatchToLeaderboard()));
-    //connect(currMatch, SIGNAL(stopped(int, int)), dynamic_cast<QObject*>(dialogView->rootObject()), SLOT(display(int, int)));
-    //connect(currMatch, SIGNAL(stopped()), dialogView, SLOT(show()));
 }
 
 void MainController::disconnectOldMatch()
 {
-    /*disconnect(serialHandler, SIGNAL(started(QTime)), currMatch, SLOT(start(QTime)));
-    disconnect(serialHandler, SIGNAL(mistake(QTime,int)), currMatch, SLOT(mistake(QTime,int)));
-    disconnect(serialHandler, SIGNAL(stopped(QTime,int)), currMatch, SLOT(stop(QTime,int)));
-    disconnect(serialHandler, SIGNAL(reset()), currMatch, SLOT(reset()));*/
-
     serialHandler->disconnect(currMatch); // disconnect all serialHandler-Signals from currMatch-Slots
 
     currMatch->disconnect(); // disconnect all currMatch-Signals from all Slots
-    //connect(currMatch, SIGNAL(stopped(int,int)), dialogView, SLOT(show()));
-    //disconnect(currMatch, SIGNAL(stopped()), this, SLOT(addMatchToLeaderboard()));
 }
 
 void MainController::newMatch() {
-    //disconnectOldMatch();
-
     currMatch = new Match();
     view.rootContext()->setContextProperty("currMatch", currMatch);
     dialogView->rootContext()->setContextProperty("currMatch", currMatch);
@@ -84,34 +71,14 @@ void MainController::newMatch() {
 
 void MainController::addMatchToLeaderboard(QString name, int duration, int mistakeCount, int avatarId)
 {
-    /*Match* currMatch = new Match();
-    currMatch->setName(name);
-    currMatch->setDuration(QTime::fromMSecsSinceStartOfDay(duration));
-    currMatch->setMistakeCount(mistakeCount);
-    currMatch->setAvatarId(avatarId);
-
-    const int listSize = leaderboard.size();
-    int idx = -1;
-    for (int i = 0; i < listSize; ++i)
-    {
-        Match* myMatch = static_cast<Match*>(leaderboard.at(i));
-        if(currMatch->duration() < myMatch->duration())
-        {
-            idx = i;
-            break;
-        }
-    }
-    if(idx < 0) {
-        idx = listSize;
-    }*/
-
-    //leaderboard.insert(idx, currMatch);
-    //newMatch();
-
-    //view.rootContext()->setContextProperty("leaderboard", QVariant::fromValue(leaderboard));
     emit addEntry(name, duration, mistakeCount, avatarId);
 
-    storageCtrl->storeMatch(currMatch);
+    Match* myMatch = new Match();
+    myMatch->setName(name);
+    myMatch->setDuration(QTime::fromMSecsSinceStartOfDay(duration));
+    myMatch->setMistakeCount(mistakeCount);
+    myMatch->setAvatarId(avatarId);
+    storageCtrl->storeMatch(myMatch);
 
     dialogView->hide();
 }

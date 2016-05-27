@@ -113,6 +113,9 @@ Item {
                     Keys.onReturnPressed: {
                         dialog.buttonAddClicked(textFieldName.text, duration, mistakeCount, avatarId)
                     }
+                    validator: RegExpValidator {
+                        regExp: /[\w ]+/
+                    }
                 }
 
                 Label {

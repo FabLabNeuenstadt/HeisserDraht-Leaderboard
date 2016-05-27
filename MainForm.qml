@@ -299,6 +299,7 @@ Rectangle {
 
             displaced: Transition {
                 NumberAnimation { properties: "x,y"; duration: 400; easing.type: Easing.OutBounce }
+                NumberAnimation { properties: "gradient"; duration: 400; easing.type: Easing.OutCubic }
             }
         }
 
